@@ -1,59 +1,94 @@
-import { Calculator, Globe, ShieldCheck, Zap } from 'lucide-react';
+import Link from 'next/link';
+
+export const runtime = 'edge';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-[#0f172a] font-sans">
-      {/* 现代导航栏 */}
-      <nav className="flex justify-between items-center px-10 py-6 border-b border-slate-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
-        <div className="text-2xl font-black tracking-tighter text-blue-600">TOOL.PRO</div>
-        <div className="flex gap-8 items-center font-bold text-sm text-slate-500">
-          <span className="flex items-center gap-1 cursor-pointer hover:text-blue-600 transition"><Globe size={16}/> EN/CN</span>
-          <button className="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 transition shadow-lg">Launch App</button>
-        </div>
-      </nav>
-
-      <main className="max-w-6xl mx-auto px-10 py-24">
-        <div className="text-center mb-20">
-          <h1 className="text-6xl font-black mb-6 leading-[1.1] tracking-tight text-slate-900">
-            Professional Financial <br/> 精算终端.
+    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+      {/* 英雄头图区：极简风格，直击痛点 */}
+      <section className="bg-white border-b border-gray-200 pt-20 pb-24 px-4 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-black text-gray-900 tracking-tight mb-6">
+            Smart Financial Tools.<br/>
+            <span className="text-blue-600">Zero Bullshit.</span>
           </h1>
-          <p className="text-slate-500 text-xl max-w-2xl mx-auto font-medium">
-            针对 2026 全球市场调优。高精度、无广告、纯净计算体验。
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            No pop-up ads, no required sign-ups, and no confusing jargon. Just lightning-fast, highly accurate financial calculators built for real people.
           </p>
-        </div>
-
-        {/* 工具入口卡片 - 彻底去 Low 化 */}
-        <div className="grid md:grid-cols-2 gap-8 mb-24">
-          <div className="p-12 bg-slate-50 rounded-[3rem] border border-transparent hover:border-blue-500 hover:bg-white transition-all shadow-sm hover:shadow-2xl">
-            <Calculator className="text-blue-600 mb-8" size={48} />
-            <h2 className="text-3xl font-bold mb-4">Mortgage Terminal</h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">实时 LPR 挂钩，支持多种还款模型。专为高净值用户设计的利率精算工具。</p>
-            <div className="text-blue-600 font-bold flex items-center gap-2">立即开始 →</div>
-          </div>
-          <div className="p-12 bg-slate-50 rounded-[3rem] border border-transparent hover:border-orange-500 hover:bg-white transition-all shadow-sm hover:shadow-2xl">
-            <Zap className="text-orange-500 mb-8" size={48} />
-            <h2 className="text-3xl font-bold mb-4">Tax Calculator</h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">多国税率适配。快速计算您的年度结余与税务优化空间，保障每一分收益。</p>
-            <div className="text-orange-500 font-bold flex items-center gap-2">开始试算 →</div>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link href="#tools" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition transform hover:-translate-y-1 shadow-lg text-lg">
+              Explore Tools
+            </Link>
           </div>
         </div>
+      </section>
 
-        {/* 专业说明区 - 替代文章板块，满足 AdSense 信息量要求 */}
-        <div className="grid md:grid-cols-3 gap-12 pt-16 border-t border-slate-100">
-          <section>
-            <h4 className="font-bold mb-3 text-lg flex items-center gap-2"><ShieldCheck size={20} className="text-blue-600"/> 隐私与安全</h4>
-            <p className="text-slate-500 text-sm leading-relaxed">遵循 2026 最新金融安全协议。我们不存储任何用户计算数据，确保隐私 100% 物理隔离。</p>
-          </section>
-          <section>
-            <h4 className="font-bold mb-3 text-lg">实时数据同步</h4>
-            <p className="text-slate-500 text-sm leading-relaxed">实时接入汇率与基准利率接口，确保计算结果与银行终端保持毫秒级同步。</p>
-          </section>
-          <section>
-            <h4 className="font-bold mb-3 text-lg">专家算法审计</h4>
-            <p className="text-slate-500 text-sm leading-relaxed">所有公式均由特许金融分析师（CFA）人工复核。这不是 AI 的猜测，而是严谨的数学逻辑。</p>
-          </section>
+      {/* 工具导航卡片区 */}
+      <section id="tools" className="py-20 px-4 max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900">Choose Your Calculator</h2>
+          <p className="text-gray-500 mt-2">100% free. Always updated.</p>
         </div>
-      </main>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* 房贷工具卡片 */}
+          <Link href="/mortgage" className="group block bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100 transition duration-300 transform hover:-translate-y-2">
+            <div className="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+              <span className="text-3xl">🏠</span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition">Mortgage Calculator</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Instantly estimate your monthly home payments. Adjust principal, down payment, and interest rates to see how they impact your 15 or 30-year loan.
+            </p>
+            <div className="mt-6 text-blue-600 font-bold flex items-center gap-2 uppercase tracking-wide text-sm">
+              Calculate Now <span className="group-hover:translate-x-2 transition">→</span>
+            </div>
+          </Link>
+
+          {/* 汇率工具卡片 */}
+          <Link href="/currency" className="group block bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100 transition duration-300 transform hover:-translate-y-2">
+            <div className="bg-green-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+              <span className="text-3xl">💱</span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition">Live Currency Converter</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Convert between 30+ global currencies in real-time. We use live mid-market exchange rate API data to ensure your conversions are perfectly accurate.
+            </p>
+            <div className="mt-6 text-blue-600 font-bold flex items-center gap-2 uppercase tracking-wide text-sm">
+              Convert Now <span className="group-hover:translate-x-2 transition">→</span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* 首页全局 FAQ (增加内容厚度，应付 AdSense) */}
+      <section className="bg-gray-900 py-24 px-4 text-white mt-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">General FAQ</h2>
+            <p className="text-gray-400">Everything you need to know about Finance Tool Pro.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <h4 className="text-xl font-bold text-blue-400 mb-2">Are these tools really free?</h4>
+              <p className="text-gray-300 text-sm leading-relaxed">Yes. 100% free forever. We don't believe in charging people to do basic math. We keep the servers running through carefully placed, non-intrusive advertisements.</p>
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-blue-400 mb-2">Do you save my financial data?</h4>
+              <p className="text-gray-300 text-sm leading-relaxed">Absolutely not. All calculations are performed directly in your browser. We do not store, track, or sell the numbers you input into our calculators. Read our <Link href="/privacy" className="underline hover:text-white">Privacy Policy</Link> for details.</p>
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-blue-400 mb-2">How accurate is the currency data?</h4>
+              <p className="text-gray-300 text-sm leading-relaxed">Our Currency Converter pulls data from enterprise-grade financial APIs. It uses the "mid-market" rate, which is the exact midpoint between global buy and sell prices.</p>
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-blue-400 mb-2">Who built this site?</h4>
+              <p className="text-gray-300 text-sm leading-relaxed">This project is maintained by an independent developer based in California, USA, who was tired of clunky finance websites. Learn more on our <Link href="/about" className="underline hover:text-white">About page</Link>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
