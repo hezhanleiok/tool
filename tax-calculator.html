@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh="累计预扣预缴个税计算器2026 - FinanceHub" data-en="2026 Cumulative Withholding Tax Calculator - FinanceHub">累计预扣预缴个税计算器2026 - FinanceHub</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2700554011244473" crossorigin="anonymous"></script>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFB52C47T2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QFB52C47T2');
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #f8fafc; font-family: 'Inter', system-ui, sans-serif; }
+        .nav-active { color: #2563eb; border-bottom: 2px solid #2563eb; }
+        #article-wrapper { max-height: 800px; overflow: hidden; position: relative; transition: max-height 0.8s ease; }
+        #article-wrapper.expanded { max-height: 50000px; } 
+        .read-more-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(transparent, white); pointer-events: none; }
+        #article-wrapper.expanded .read-more-overlay { display: none; }
+        table { font-size: 0.75rem; width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        table th, table td { padding: 12px 8px; border: 1px solid #f1f5f9; text-align: left; }
+        .prose h1 { font-size: 1.875rem; font-weight: 900; color: #0f172a; margin-bottom: 1.5rem; }
+        .prose h2 { font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-top: 2.5rem; margin-bottom: 1.25rem; border-left: 5px solid #2563eb; padding-left: 1rem; }
+        .prose p { margin-bottom: 1.5rem; line-height: 1.8; color: #475569; text-align: justify; }
+        
+        /* 计算器样式优化 */
+        .calc-input-group { margin-bottom: 20px; }
+        .calc-label { font-size: 12px; font-weight: bold; color: #64748b; margin-bottom: 8px; display: block; }
+        .calc-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; font-weight: 600; outline: none; transition: border-color 0.2s; }
+        .calc-input:focus { border-color: #2563eb; }
+        .calc-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .calc-button { width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; margin: 10px 0; }
+        .calc-button:hover { background: #1d4ed8; }
+        .calc-button.secondary { background: #64748b; }
+        .calc-button.secondary:hover { background: #475569; }
+        .result-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .result-label { font-size: 12px; color: #64748b; margin-bottom: 6px; font-weight: bold; }
+        .result-value { font-size: 20px; font-weight: 800; color: #1e293b; }
+        .result-value.positive { color: #10b981; }
+        .result-value.negative { color: #ef4444; }
+        .result-value.neutral { color: #64748b; }
+    </style>
+</head>
+<body class="text-slate-800">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2 font-black text-2xl text-blue-600 italic">
+                <a href="/index.html"><span>FinanceHub</span><span class="text-slate-400">2026</span></a>
+            </div>
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <div class="hidden md:flex space-x-6 text-sm font-bold">
+                    <a href="/index.html" class="pb-1 hover:text-blue-600 transition" data-zh="汇率转换" data-en="Exchange">汇率转换</a>
+                    <a href="/tax-calculator.html" class="nav-active pb-1" data-zh="个税计算" data-en="Tax Calc">个税计算</a>
+                    <a href="/mortgage-calculator.html" class="pb-1 hover:text-blue-600 transition" data-zh="房贷计算" data-en="Mortgage">房贷计算</a>
+                    <a href="/archive.html" class="pb-1 hover:text-blue-600 transition" data-zh="历史存档" data-en="Archive">历史存档</a>
+                </div>
+                <button id="langSwitcher" onclick="toggleLang()" class="bg-slate-100 px-4 py-2 rounded-full text-[10px] font-black border border-slate-200 uppercase transition hover:bg-blue-50">
+                    EN / 中文
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 grid lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-5">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 sticky top-24">
+                <h2 class="text-xl font-black mb-6 text-blue-600" data-zh="累计预扣预缴个税计算器2026" data-en="2026 Cumulative Withholding Tax Calculator">累计预扣预缴个税计算器2026</h2>
+                
+                <div class="calc-input-group">
+                    <label class="calc-label" data-zh="纳税期数" data-en="Tax Period">纳税期数</label>
+                    <input type="number" id="taxPeriod" value="1" min="1" max="12" class="calc-input">
+                </div>
+                
+                <div class="calc-input-grid">
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="本月工资" data-en="This Month Salary">本月工资</label>
+                        <input type="number" id="currentSalary" placeholder="请输入" class="calc-input">
+                    </div>
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="累计工资" data-en="Cumulative Salary">累计工资</label>
+                        <input type="number" id="cumulativeSalary" placeholder="请输入" class="calc-input">
+                    </div>
+                </div>
+                
+                <div class="calc-input-grid">
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="社会保险费" data-en="Social Insurance">社会保险费</label>
+                        <input type="number" id="currentInsurance" value="0" class="calc-input">
+                    </div>
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="累计保险" data-en="Cumulative Insurance">累计保险</label>
+                        <input type="number" id="cumulativeInsurance" value="0" class="calc-input">
+                    </div>
+                </div>
+                
+                <div class="calc-input-grid">
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="专项附加扣除" data-en="Special Deductions">专项附加扣除</label>
+                        <input type="number" id="currentDeductions" value="0" class="calc-input">
+                    </div>
+                    <div class="calc-input-group">
+                        <label class="calc-label" data-zh="累计扣除" data-en="Cumulative Deductions">累计扣除</label>
+                        <input type="number" id="cumulativeDeductions" value="0" class="calc-input">
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-dashed">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4" data-zh="个人所得税计算结果" data-en="Income Tax Calculation Results">个人所得税计算结果</h3>
+                    
+                    <div id="taxResult" class="hidden space-y-4">
+                        <div class="result-item">
+                            <div class="result-label" data-zh="应纳税所得额" data-en="Taxable Income">应纳税所得额</div>
+                            <div id="taxableIncome" class="result-value neutral">0元</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="result-item">
+                                <div class="result-label" data-zh="适用税率" data-en="Tax Rate">适用税率</div>
+                                <div id="taxRate" class="result-value neutral">0%</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label" data-zh="速算扣除数" data-en="Quick Deduction">速算扣除数</div>
+                                <div id="quickDeduction" class="result-value neutral">0元</div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label" data-zh="已缴税款" data-en="Tax Paid">已缴税款</div>
+                            <div id="taxPaid" class="result-value neutral">0元</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label" data-zh="累计应缴税款" data-en="Cumulative Tax Due">累计应缴税款</div>
+                            <div id="cumulativeTaxDue" class="result-value neutral">0元</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label" data-zh="应补(退)税款" data-en="Tax Balance">应补(退)税款</div>
+                            <div id="taxBalance" class="result-value neutral">0元</div>
+                        </div>
+                        
+                        <div class="result-item bg-blue-50 border-blue-200">
+                            <div class="result-label" data-zh="本月税后收入" data-en="Monthly Net Income">本月税后收入</div>
+                            <div id="netIncome" class="result-value positive text-2xl">0元</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-600">
+                        <p class="italic mb-2" data-zh="新个税累计预扣预缴计算方法太复杂，很难理解" data-en="The new cumulative withholding tax calculation method is too complex and hard to understand.">
+                            新个税累计预扣预缴计算方法太复杂，很难理解
+                        </p>
+                        <p data-zh="试一试每月录入，分解计算吧！" data-en="Try monthly entry and break down the calculation!">
+                            试一试每月录入，分解计算吧！
+                        </p>
+                    </div>
+                    
+                    <div class="flex space-x-4 mt-6">
+                        <button onclick="calculateTax()" class="calc-button flex-1" data-zh="计算" data-en="Calculate">计算</button>
+                        <button onclick="resetCalculator()" class="calc-button secondary flex-1" data-zh="重置" data-en="Reset">重置</button>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-8 border-t border-dashed">
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2700554011244473" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7">
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 relative">
+                <div id="article-wrapper">
+                    <article class="prose max-w-none text-sm text-slate-600 leading-relaxed">
+                        <h1 data-zh="2026个税改革深度解析：累计预扣预缴制度的机遇与挑战" data-en="2026 Tax Reform Analysis: Opportunities & Challenges of Cumulative Withholding System">2026个税改革深度解析：累计预扣预缴制度的机遇与挑战</h1>
+                        <p class="text-blue-600 font-bold mb-8 italic" data-zh="透视新税制下的家庭财富优化路径" data-en="Optimizing Household Wealth under New Tax System">透视新税制下的家庭财富优化路径</p>
+
+                        <div class="bg-blue-50 p-6 rounded-2xl mb-8 border-l-4 border-blue-500">
+                            <strong data-zh="核心摘要" data-en="Core Abstract">核心摘要：</strong>
+                            <p data-zh="2026年个税制度迎来深度改革，累计预扣预缴机制全面优化。这一变革不仅影响每月税后收入，更关系到家庭全年现金流规划。本文将深入解析新税制运作逻辑，揭示累计预扣预缴计算方法，并提供实用节税策略，帮助家庭在合规前提下最大化税后收益。" data-en="2026 sees a deep reform of personal income tax, with comprehensive optimization of the cumulative withholding mechanism. This change affects monthly net income and annual cash flow planning. This article provides in-depth analysis and practical tax-saving strategies.">
+                                2026年个税制度迎来深度改革，累计预扣预缴机制全面优化。这一变革不仅影响每月税后收入，更关系到家庭全年现金流规划。本文将深入解析新税制运作逻辑，揭示累计预扣预缴计算方法，并提供实用节税策略，帮助家庭在合规前提下最大化税后收益。
+                            </p>
+                        </div>
+
+                        <h2 data-zh="一、累计预扣预缴制度：从按月计税到年度累计" data-en="I. Cumulative Withholding System: From Monthly to Annual Accumulation">一、累计预扣预缴制度：从按月计税到年度累计</h2>
+                        
+                        <p data-zh="累计预扣预缴是个税征管体系的重大创新。传统的按月计税方法简单直接，但存在'年初税负轻、年末税负重'的不均衡现象。新制度将纳税人的工资薪金、劳务报酬等综合所得按月累计，适用年度税率表计算应纳税额，再减去已缴税额，确定本期应缴税额。" data-en="The cumulative withholding system is a major innovation in tax collection management. The new system accumulates income monthly and applies annual tax rates for more equitable tax distribution.">
+                            累计预扣预缴是个税征管体系的重大创新。传统的按月计税方法简单直接，但存在"年初税负轻、年末税负重"的不均衡现象。新制度将纳税人的工资薪金、劳务报酬等综合所得按月累计，适用年度税率表计算应纳税额，再减去已缴税额，确定本期应缴税额。
+                        </p>
+                        
+                        <p data-zh="这一变化的核心优势在于税负更加均衡。以年收入24万元为例，在旧制度下，每月应纳税所得额为1.5万元，适用10%税率；在新制度下，随着累计收入增加，税率会逐步提升，但全年总税负更加合理，避免了年末'税收悬崖'现象。" data-en="The core advantage is more balanced tax burden. For example, with an annual income of 240,000 RMB, the tax rate gradually increases as cumulative income rises, avoiding the 'tax cliff' at year-end.">
+                            这一变化的核心优势在于税负更加均衡。以年收入24万元为例，在旧制度下，每月应纳税所得额为1.5万元，适用10%税率；在新制度下，随着累计收入增加，税率会逐步提升，但全年总税负更加合理，避免了年末"税收悬崖"现象。
+                        </p>
+                        
+                        <h3 data-zh="1.1 累计预扣预缴计算公式" data-en="1.1 Cumulative Withholding Calculation Formula">1.1 累计预扣预缴计算公式</h3>
+                        
+                        <p data-zh="累计预扣预缴的计算公式可分解为五个步骤：第一步，计算累计应纳税所得额；第二步，查找适用税率和速算扣除数；第三步，计算累计应纳税额；第四步，减去累计已缴税额；第五步，得出本期应缴税额。这一过程虽然复杂，但能更准确地反映纳税人的年度税负。" data-en="The cumulative withholding calculation formula can be broken down into five steps, ensuring more accurate annual tax burden reflection.">
+                            累计预扣预缴的计算公式可分解为五个步骤：第一步，计算累计应纳税所得额；第二步，查找适用税率和速算扣除数；第三步，计算累计应纳税额；第四步，减去累计已缴税额；第五步，得出本期应缴税额。这一过程虽然复杂，但能更准确地反映纳税人的年度税负。
+                        </p>
+                        
+                        <div class="overflow-x-auto rounded-xl border border-slate-200 my-6">
+                            <table>
+                                <thead class="bg-slate-50 font-bold">
+                                    <tr>
+                                        <th data-zh="累计应纳税所得额区间" data-en="Cumulative Taxable Income Range">累计应纳税所得额区间</th>
+                                        <th data-zh="税率" data-en="Tax Rate">税率</th>
+                                        <th data-zh="速算扣除数" data-en="Quick Deduction">速算扣除数</th>
+                                        <th data-zh="月均应纳税所得额" data-en="Average Monthly Taxable Income">月均应纳税所得额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-zh="不超过36,000元" data-en="≤ 36,000 RMB">不超过36,000元</td>
+                                        <td>3%</td>
+                                        <td>0</td>
+                                        <td data-zh="≤ 3,000元" data-en="≤ 3,000 RMB">≤ 3,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="36,000元-144,000元" data-en="36,000-144,000 RMB">36,000元-144,000元</td>
+                                        <td>10%</td>
+                                        <td>2,520</td>
+                                        <td data-zh="3,000元-12,000元" data-en="3,000-12,000 RMB">3,000元-12,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="144,000元-300,000元" data-en="144,000-300,000 RMB">144,000元-300,000元</td>
+                                        <td>20%</td>
+                                        <td>16,920</td>
+                                        <td data-zh="12,000元-25,000元" data-en="12,000-25,000 RMB">12,000元-25,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="300,000元-420,000元" data-en="300,000-420,000 RMB">300,000元-420,000元</td>
+                                        <td>25%</td>
+                                        <td>31,920</td>
+                                        <td data-zh="25,000元-35,000元" data-en="25,000-35,000 RMB">25,000元-35,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="420,000元-660,000元" data-en="420,000-660,000 RMB">420,000元-660,000元</td>
+                                        <td>30%</td>
+                                        <td>52,920</td>
+                                        <td data-zh="35,000元-55,000元" data-en="35,000-55,000 RMB">35,000元-55,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="660,000元-960,000元" data-en="660,000-960,000 RMB">660,000元-960,000元</td>
+                                        <td>35%</td>
+                                        <td>85,920</td>
+                                        <td data-zh="55,000元-80,000元" data-en="55,000-80,000 RMB">55,000元-80,000元</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-zh="超过960,000元" data-en="> 960,000 RMB">超过960,000元</td>
+                                        <td>45%</td>
+                                        <td>181,920</td>
+                                        <td data-zh="> 80,000元" data-en="> 80,000 RMB">> 80,000元</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h2 data-zh="二、专项附加扣除优化：家庭节税的关键支点" data-en="II. Special Additional Deductions: Key Lever for Family Tax Savings">二、专项附加扣除优化：家庭节税的关键支点</h2>
+                        
+                        <p data-zh="2026年专项附加扣除政策迎来三大升级：扣除标准提高、覆盖范围扩大、申报流程简化。其中，子女教育扣除从每月1000元提高到2000元，婴幼儿照护纳入专项扣除，住房租金扣除标准实现区域差异化调整。这些变化为家庭节税提供了更大空间。" data-en="2026 sees three major upgrades to special additional deductions: higher standards, broader coverage, and simplified processes, providing greater tax-saving space for families.">
+                            2026年专项附加扣除政策迎来三大升级：扣除标准提高、覆盖范围扩大、申报流程简化。其中，子女教育扣除从每月1000元提高到2000元，婴幼儿照护纳入专项扣除，住房租金扣除标准实现区域差异化调整。这些变化为家庭节税提供了更大空间。
+                        </p>
+                        
+                        <div class="bg-green-50 p-6 rounded-2xl my-6 border-l-4 border-green-500">
+                            <strong data-zh="案例分析：张先生一家的个税优化策略" data-en="Case Study: Mr. Zhang's Family Tax Optimization Strategy">案例分析：张先生一家的个税优化策略</strong>
+                            <p data-zh="张先生，38岁，在北京从事IT工作，月薪3万元；妻子李女士，35岁，月薪2万元。家中有一个8岁女儿和一个2岁儿子。张先生父母均已退休，由兄妹三人共同赡养。经优化专项附加扣除后，张先生一家年度个税支出从4.2万元降至2.8万元，节税1.4万元，税后收入增加11.7%。" data-en="Mr. Zhang, 38, earns 30,000 RMB/month; his wife earns 20,000 RMB/month. They have two children. After optimizing deductions, their annual tax dropped from 42,000 to 28,000 RMB, saving 14,000 RMB.">
+                                张先生，38岁，在北京从事IT工作，月薪3万元；妻子李女士，35岁，月薪2万元。家中有一个8岁女儿和一个2岁儿子。张先生父母均已退休，由兄妹三人共同赡养。经优化专项附加扣除后，张先生一家年度个税支出从4.2万元降至2.8万元，节税1.4万元，税后收入增加11.7%。
+                            </p>
+                        </div>
+                        
+                        <h3 data-zh="2.1 扣除项目配置策略" data-en="2.1 Deduction Item Configuration Strategy">2.1 扣除项目配置策略</h3>
+                        
+                        <p data-zh="专项附加扣除的配置策略直接影响家庭税负。建议遵循'优先高税率方、统筹家庭利益、动态调整分配'的原则。子女教育和婴幼儿照护扣除应优先由收入较高的一方全额申报，因为高收入方适用更高税率，扣除的节税效果更明显。对于赡养老人扣除，兄弟姐妹间可协商分配，但需注意每人每月最高扣除额为2000元。" data-en="Deduction configuration strategies directly impact family tax burden. Prioritize higher-income spouse for children's deductions to maximize tax savings.">
+                            专项附加扣除的配置策略直接影响家庭税负。建议遵循"优先高税率方、统筹家庭利益、动态调整分配"的原则。子女教育和婴幼儿照护扣除应优先由收入较高的一方全额申报，因为高收入方适用更高税率，扣除的节税效果更明显。对于赡养老人扣除，兄弟姐妹间可协商分配，但需注意每人每月最高扣除额为2000元。
+                        </p>
+                        
+                        <h2 data-zh="三、累计预扣预缴的财务影响与规划" data-en="III. Financial Impact and Planning of Cumulative Withholding">三、累计预扣预缴的财务影响与规划</h2>
+                        
+                        <p data-zh="累计预扣预缴制度改变了家庭现金流的时间分布。在年初几个月，由于累计收入较低，适用较低税率，税后收入相对较高；随着时间推移，累计收入进入更高税率区间，每月预缴税额增加，税后收入相应减少。这种变化要求家庭调整月度预算安排，建立更加灵活的现金流管理机制。" data-en="The cumulative withholding system changes the timing of household cash flow, requiring more flexible monthly budgeting and cash management.">
+                            累计预扣预缴制度改变了家庭现金流的时间分布。在年初几个月，由于累计收入较低，适用较低税率，税后收入相对较高；随着时间推移，累计收入进入更高税率区间，每月预缴税额增加，税后收入相应减少。这种变化要求家庭调整月度预算安排，建立更加灵活的现金流管理机制。
+                        </p>
+                        
+                        <h3 data-zh="3.1 月度现金流管理策略" data-en="3.1 Monthly Cash Flow Management Strategy">3.1 月度现金流管理策略</h3>
+                        
+                        <p data-zh="面对累计预扣预缴带来的现金流变化，建议采取'年初储备、年中平衡、年末调节'的策略。具体而言：1-4月，将部分税后收入存入专项储蓄账户；5-8月，根据实际税负调整支出计划；9-12月，利用专项附加扣除申报调整年度税负。同时，建议每月使用本计算器模拟未来月份税负，提前做好财务规划。" data-en="Facing cash flow changes, adopt a 'early-year reserve, mid-year balance, year-end adjustment' strategy, and use calculators to simulate future tax burdens.">
+                            面对累计预扣预缴带来的现金流变化，建议采取"年初储备、年中平衡、年末调节"的策略。具体而言：1-4月，将部分税后收入存入专项储蓄账户；5-8月，根据实际税负调整支出计划；9-12月，利用专项附加扣除申报调整年度税负。同时，建议每月使用本计算器模拟未来月份税负，提前做好财务规划。
+                        </p>
+                        
+                        <h2 data-zh="四、2026个税改革展望与应对策略" data-en="IV. 2026 Tax Reform Outlook & Response Strategies">四、2026个税改革展望与应对策略</h2>
+                        
+                        <p data-zh="2026年个税改革将延续'简化税制、扩大扣除、优化服务'的主线。预计未来可能推出个人所得税APP智能申报系统，实现工资薪金、劳务报酬等多项收入的自动归集和申报。同时，专项附加扣除可能进一步扩围，将职业技能培训、商业健康保险等纳入扣除范围。" data-en="2026 tax reform will continue to simplify tax system, expand deductions, and optimize services, with possible inclusion of vocational training and health insurance in deductions.">
+                            2026年个税改革将延续"简化税制、扩大扣除、优化服务"的主线。预计未来可能推出个人所得税APP智能申报系统，实现工资薪金、劳务报酬等多项收入的自动归集和申报。同时，专项附加扣除可能进一步扩围，将职业技能培训、商业健康保险等纳入扣除范围。
+                        </p>
+                        
+                        <div class="bg-yellow-50 p-6 rounded-2xl my-8 border-l-4 border-yellow-500">
+                            <strong data-zh="结语：主动规划，理性应对" data-en="Conclusion: Proactive Planning, Rational Response">结语：主动规划，理性应对</strong>
+                            <p data-zh="累计预扣预缴制度的实施，标志我国个人所得税征管进入精细化、智能化新阶段。对于纳税人而言，这既是挑战也是机遇。挑战在于税负计算更加复杂，需要更多专业知识；机遇在于通过合理规划，可以在合规前提下有效降低税负。建议纳税人：1.掌握累计预扣预缴计算方法；2.优化专项附加扣除配置；3.建立动态现金流管理体系；4.关注政策变化，及时调整策略。" data-en="The cumulative withholding system marks a new stage of refined, intelligent tax collection. For taxpayers, this is both challenge and opportunity. Master calculation methods, optimize deductions, and manage cash flow dynamically.">
+                                累计预扣预缴制度的实施，标志我国个人所得税征管进入精细化、智能化新阶段。对于纳税人而言，这既是挑战也是机遇。挑战在于税负计算更加复杂，需要更多专业知识；机遇在于通过合理规划，可以在合规前提下有效降低税负。建议纳税人：1.掌握累计预扣预缴计算方法；2.优化专项附加扣除配置；3.建立动态现金流管理体系；4.关注政策变化，及时调整策略。
+                            </p>
+                            <p data-zh="FinanceHub 2026将持续更新个税计算工具和政策解读，为家庭财富管理提供专业支持。记住，税收规划不是避税，而是在法律框架内合理安排财务活动，实现财富最大化。" data-en="FinanceHub 2026 will continue to update tax tools and policy interpretations, providing professional support for family wealth management.">
+                                FinanceHub 2026将持续更新个税计算工具和政策解读，为家庭财富管理提供专业支持。记住，税收规划不是避税，而是在法律框架内合理安排财务活动，实现财富最大化。
+                            </p>
+                        </div>
+                    </article>
+                    <div class="read-more-overlay"></div>
+                </div>
+                <div class="text-center mt-6">
+                    <button onclick="expandArticle()" id="read-more-btn" class="bg-blue-600 text-white px-10 py-3 rounded-full font-bold shadow-lg hover:bg-blue-700 transition" data-zh="阅读全文内容" data-en="Read Full Article">阅读全文内容</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-6xl mx-auto px-6 py-10">
+            <!-- 底部链接 -->
+            <div class="flex justify-center space-x-10 mb-8">
+                <a href="/privacy-policy.html" class="text-slate-600 hover:text-blue-600 text-sm font-medium" data-zh="隐私政策" data-en="Privacy Policy">隐私政策</a>
+                <a href="/about.html" class="text-slate-600 hover:text-blue-600 text-sm font-medium" data-zh="联系我们" data-en="Contact Us">联系我们</a>
+                <a href="/disclaimer.html" class="text-slate-600 hover:text-blue-600 text-sm font-medium" data-zh="免责声明" data-en="Disclaimer">免责声明</a>
+            </div>
+            
+            <!-- 版权信息 -->
+            <div class="text-center text-slate-400 text-xs font-bold uppercase">
+                <p>© 2026 FinanceHub Pro. All rights reserved.</p>
+                <p class="mt-2" data-zh="致力于提供高质量的金融原创内容" data-en="Committed to providing high-quality original financial content">致力于提供高质量的金融原创内容</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 个税税率表（2026年标准）
+        const taxBrackets = [
+            { min: 0, max: 36000, rate: 0.03, deduction: 0 },
+            { min: 36000, max: 144000, rate: 0.10, deduction: 2520 },
+            { min: 144000, max: 300000, rate: 0.20, deduction: 16920 },
+            { min: 300000, max: 420000, rate: 0.25, deduction: 31920 },
+            { min: 420000, max: 660000, rate: 0.30, deduction: 52920 },
+            { min: 660000, max: 960000, rate: 0.35, deduction: 85920 },
+            { min: 960000, max: Infinity, rate: 0.45, deduction: 181920 }
+        ];
+
+        function calculateTax() {
+            // 获取输入值
+            const period = parseInt(document.getElementById('taxPeriod').value) || 1;
+            const currentSalary = parseFloat(document.getElementById('currentSalary').value) || 0;
+            const cumulativeSalary = parseFloat(document.getElementById('cumulativeSalary').value) || 0;
+            const currentInsurance = parseFloat(document.getElementById('currentInsurance').value) || 0;
+            const cumulativeInsurance = parseFloat(document.getElementById('cumulativeInsurance').value) || 0;
+            const currentDeductions = parseFloat(document.getElementById('currentDeductions').value) || 0;
+            const cumulativeDeductions = parseFloat(document.getElementById('cumulativeDeductions').value) || 0;
+            
+            // 基本减除费用（每月5000元）
+            const basicDeduction = 5000;
+            const cumulativeBasicDeduction = basicDeduction * period;
+            
+            // 计算累计应纳税所得额
+            const totalCumulativeIncome = cumulativeSalary + currentSalary;
+            const totalCumulativeInsurance = cumulativeInsurance + currentInsurance;
+            const totalCumulativeDeductions = cumulativeDeductions + currentDeductions;
+            
+            const cumulativeTaxableIncome = Math.max(0, 
+                totalCumulativeIncome - 
+                totalCumulativeInsurance - 
+                totalCumulativeDeductions - 
+                cumulativeBasicDeduction
+            );
+            
+            // 计算累计应纳税额
+            let cumulativeTaxDue = 0;
+            let applicableRate = 0;
+            let quickDeduction = 0;
+            
+            for (const bracket of taxBrackets) {
+                if (cumulativeTaxableIncome > bracket.min) {
+                    const taxableInBracket = Math.min(cumulativeTaxableIncome, bracket.max) - bracket.min;
+                    cumulativeTaxDue += taxableInBracket * bracket.rate;
+                    if (cumulativeTaxableIncome <= bracket.max) {
+                        applicableRate = bracket.rate;
+                        quickDeduction = bracket.deduction;
+                        break;
+                    }
+                }
+            }
+            
+            // 已缴税款（使用累计工资中的已缴税额估算）
+            // 实际应用中，已缴税款需要从历史数据获取，这里用简化方式估算
+            const taxPaid = calculateTaxForIncome(cumulativeSalary, cumulativeInsurance, cumulativeDeductions, basicDeduction * (period - 1));
+            
+            // 本期应缴税款
+            const currentTaxDue = cumulativeTaxDue - taxPaid;
+            
+            // 本期税后收入
+            const netIncome = currentSalary - currentTaxDue - currentInsurance;
+            
+            // 显示结果
+            document.getElementById('taxableIncome').textContent = cumulativeTaxableIncome.toFixed(2) + '元';
+            document.getElementById('taxRate').textContent = (applicableRate * 100).toFixed(0) + '%';
+            document.getElementById('quickDeduction').textContent = quickDeduction.toFixed(2) + '元';
+            document.getElementById('taxPaid').textContent = taxPaid.toFixed(2) + '元';
+            document.getElementById('cumulativeTaxDue').textContent = cumulativeTaxDue.toFixed(2) + '元';
+            
+            const taxBalanceElem = document.getElementById('taxBalance');
+            taxBalanceElem.textContent = currentTaxDue.toFixed(2) + '元';
+            if (currentTaxDue > 0) {
+                taxBalanceElem.className = 'result-value negative';
+            } else if (currentTaxDue < 0) {
+                taxBalanceElem.className = 'result-value positive';
+                taxBalanceElem.textContent = '(' + Math.abs(currentTaxDue).toFixed(2) + '元)';
+            } else {
+                taxBalanceElem.className = 'result-value neutral';
+            }
+            
+            document.getElementById('netIncome').textContent = netIncome.toFixed(2) + '元';
+            document.getElementById('taxResult').classList.remove('hidden');
+            
+            // 滚动到结果区域
+            setTimeout(() => {
+                document.getElementById('taxResult').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 100);
+        }
+
+        function calculateTaxForIncome(income, insurance, deductions, basicDeduction) {
+            const taxableIncome = Math.max(0, income - insurance - deductions - basicDeduction);
+            let tax = 0;
+            
+            for (const bracket of taxBrackets) {
+                if (taxableIncome > bracket.min) {
+                    const taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
+                    tax += taxableInBracket * bracket.rate;
+                    if (taxableIncome <= bracket.max) {
+                        break;
+                    }
+                }
+            }
+            
+            return tax;
+        }
+
+        function resetCalculator() {
+            document.getElementById('taxPeriod').value = 1;
+            document.getElementById('currentSalary').value = '';
+            document.getElementById('cumulativeSalary').value = '';
+            document.getElementById('currentInsurance').value = 0;
+            document.getElementById('cumulativeInsurance').value = 0;
+            document.getElementById('currentDeductions').value = 0;
+            document.getElementById('cumulativeDeductions').value = 0;
+            
+            document.getElementById('taxResult').classList.add('hidden');
+        }
+
+        // 全局多语言同步逻辑
+        function applyLang(lang) {
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = el.getAttribute(`data-${lang}`);
+            });
+            localStorage.setItem('site_lang', lang);
+            const btn = document.getElementById('langSwitcher');
+            if(btn) btn.innerText = lang === 'zh' ? 'EN / 中文' : '中文 / EN';
+        }
+
+        function toggleLang() {
+            const current = localStorage.getItem('site_lang') === 'en' ? 'zh' : 'en';
+            applyLang(current);
+        }
+
+        function expandArticle() { 
+            document.getElementById('article-wrapper').classList.add('expanded'); 
+            document.getElementById('read-more-btn').style.display = 'none'; 
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('site_lang') || 'zh';
+            applyLang(savedLang);
+        });
+    </script>
+</body>
+</html>
