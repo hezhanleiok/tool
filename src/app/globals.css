@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* 屏蔽 Google Translate 默认的丑陋 UI */
+.goog-te-banner-frame.skiptranslate, 
+.skiptranslate > iframe {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+  position: relative !important;
+}
+#goog-gt-tt, .goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
