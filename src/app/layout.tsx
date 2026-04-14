@@ -4,59 +4,49 @@ import CookieBanner from '@/components/CookieBanner';
 
 export const runtime = 'edge';
 
+// 🚨 2026 顶级 SEO 标题，精准打击搜索词
 export const metadata = {
-  title: 'Free Mortgage Calculator & Live Currency Converter',
-  description: '100% free financial calculators. Live exchange rates, mortgage payments, and more. No sign up required.',
+  title: 'Free Mortgage Calculator & Live Currency Converter (Real-time)',
+  description: 'Hand-coded financial tools for modern users. Instant mortgage estimates and live exchange rates for 40+ currencies. No sign-up, no hidden fees.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* 引入 Google 官方的多语言翻译脚本 */}
+        {/* Google 翻译引擎脚本 */}
         <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
         <script dangerouslySetInnerHTML={{
           __html: `function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element'); }`
         }}></script>
       </head>
-      <body className="flex flex-col min-h-screen bg-gray-50 text-gray-800 font-sans">
-        
-        {/* 全局顶部导航 */}
-        <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+      <body className="flex flex-col min-h-screen bg-white text-slate-900 font-sans">
+        <header className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
-            {/* 极简、去AI化的 Logo */}
-            <Link href="/" className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-              <span className="text-blue-600">Free</span>Calc
+            <Link href="/" className="text-2xl font-black flex items-center gap-2">
+              <span className="text-blue-600 tracking-tighter">Finance</span>Tool
             </Link>
-            
-            <div className="flex items-center gap-6">
-              <nav className="hidden md:flex gap-6 font-semibold text-sm text-gray-600">
+            <div className="flex items-center gap-8">
+              <nav className="hidden md:flex gap-8 font-bold text-sm">
                 <Link href="/mortgage" className="hover:text-blue-600 transition">Mortgage</Link>
                 <Link href="/currency" className="hover:text-blue-600 transition">Currency</Link>
               </nav>
-              
-              {/* 多语言切换器 (Google Translate 挂载点) */}
-              <div className="hidden sm:block border-l border-gray-200 pl-6">
-                 <div id="google_translate_element" className="text-sm"></div>
-              </div>
+              {/* 语言切换挂载点 */}
+              <div id="google_translate_element" className="text-sm"></div>
             </div>
           </div>
         </header>
 
-        {/* 核心功能区 */}
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
 
-        {/* 全局底部导航 */}
-        <footer className="bg-white border-t border-gray-200 mt-16 py-12">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col items-center text-sm text-gray-500 gap-6">
-            <div className="flex flex-wrap justify-center gap-8 font-medium">
-              <Link href="/about" className="hover:text-blue-600 transition">About Us</Link>
-              <Link href="/privacy" className="hover:text-blue-600 transition">Privacy Policy</Link>
-              <Link href="/disclaimer" className="hover:text-blue-600 transition">Disclaimer</Link>
+        <footer className="bg-slate-50 border-t py-12">
+          <div className="max-w-6xl mx-auto px-4 flex flex-col items-center gap-8">
+            <div className="flex flex-wrap justify-center gap-8 font-bold text-slate-500">
+              <Link href="/about" className="hover:text-blue-600">About</Link>
+              <Link href="/privacy" className="hover:text-blue-600">Privacy</Link>
+              <Link href="/disclaimer" className="hover:text-blue-600">Disclaimer</Link>
             </div>
-            <p>© {new Date().getFullYear()} Free Financial Calculators. All rights reserved.</p>
+            <p className="text-slate-400 text-sm italic">© 2026 Finance Tool Pro - Los Angeles, CA.</p>
           </div>
         </footer>
         <CookieBanner />
